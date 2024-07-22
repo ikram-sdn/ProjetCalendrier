@@ -37,7 +37,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private ?bool $is_verified = null;
+    private ?bool $is_verified = false;
 
     public function getId(): ?int
     {
