@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -31,11 +31,13 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            // Set the default role to ROLE_USER
+            $user->setRoles(['ROLE_USER']);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
+            // Log in the user
             return $security->login($user, UsersAuthenticator::class, 'main');
         }
 

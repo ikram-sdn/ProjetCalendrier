@@ -1,0 +1,32 @@
+/* public/css/navbar.css */
+
+/* Style de la barre de navigation */
+.navbar {
+    background-color: #007bff; /* Bleu de la barre de navigation */
+    border-bottom: 1px solid #0056b3; /* Couleur légèrement plus sombre pour la bordure */
+}
+
+.navbar-brand {
+    color: #ffffff; /* Texte blanc pour la marque */
+}
+
+.navbar-brand:hover {
+    color: #e0e0e0; /* Texte légèrement gris clair au survol */
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff; /* Texte blanc pour les liens */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #e0e0e0; /* Texte légèrement gris clair au survol */
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff; /* Couleur des icônes du menu hamburger */
+}
+
+/* Aligner les liens d'inscription et de connexion à droite */
+.navbar-nav.ml-auto {
+    margin-left: auto;
+}

@@ -26,6 +26,9 @@ class Calendar
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)] // Ensure this field is nullable if needed
+    private ?string $commentaire = null; // Changed field name to lowercase
+
     #[ORM\Column]
     private ?bool $all_day = null;
 
@@ -37,6 +40,13 @@ class Calendar
 
     #[ORM\Column(length: 7)]
     private ?string $text_color = null;
+
+    #[ORM\ManyToOne(targetEntity: Users::class, inversedBy: 'calendars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $status = 'en cours';
 
     public function getId(): ?int
     {
@@ -135,6 +145,42 @@ class Calendar
     public function setTextColor(string $text_color): static
     {
         $this->text_color = $text_color;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string // Return type should be nullable
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(?string $commentaire): static // Parameter name fixed
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }

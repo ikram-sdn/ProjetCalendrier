@@ -14,32 +14,36 @@
                 <th>End</th>
                 <th>Description</th>
                 <th>All_day</th>
-                <th>Background_color</th>
-                <th>Border_color</th>
-                <th>Text_color</th>
-                <th>actions</th>
+                <th>Status</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>User</th>
+                {% endif %}
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for calendar in calendars %}
-            <tr>
+            <tr class="{% if calendar.status == 'accepté' %}table-success{% elseif calendar.status == 'refusé' %}table-danger{% elseif calendar.status == 'en cours' %}table-warning{% endif %}">
                 <td>{{ calendar.id }}</td>
                 <td>{{ calendar.title }}</td>
                 <td>{{ calendar.start ? calendar.start|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ calendar.end ? calendar.end|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ calendar.description }}</td>
                 <td>{{ calendar.allDay ? 'Yes' : 'No' }}</td>
-                <td>{{ calendar.backgroundColor }}</td>
-                <td>{{ calendar.borderColor }}</td>
-                <td>{{ calendar.textColor }}</td>
+                <td>{{ calendar.status }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>{{ calendar.user ? calendar.user.nickname : 'Utilisateur non assigné' }}</td>
+                {% endif %}
                 <td>
                     <a href="{{ path('app_calendar_show', {'id': calendar.id}) }}">show</a>
-                    <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">edit</a>
+                    {% if is_granted('ROLE_ADMIN') or calendar.status == 'en cours' %}
+                        <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="{% if is_granted('ROLE_ADMIN') %}11{% else %}10{% endif %}">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -48,6 +48,7 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        dd("dfss");
         // For example:
         return new RedirectResponse($this->urlGenerator->generate('main'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);

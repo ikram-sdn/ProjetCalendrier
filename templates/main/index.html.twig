@@ -5,9 +5,10 @@
 {% block stylesheets %}
     <style>
         #calendrier {
-            width: 80%;
+            width: 100%;
             margin: auto;
         }
+        
     </style>
 {% endblock %}
 
@@ -29,7 +30,7 @@
                 center: 'title',
                 end: 'dayGridMonth,timeGridWeek'
             },
-            events: {{ data|raw }},
+            events: {{ data|raw }}, // Utiliser la variable 'data' passée au template
             editable: true,
             eventResizableFromStart: true,
             eventClick: function(info) {

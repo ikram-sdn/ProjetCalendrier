@@ -15,6 +15,10 @@ class CalendarRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Calendar::class);
     }
+    public function findByStatus(string $status)
+    {
+        return $this->findBy(['status' => $status]);
+    }
 
     //    /**
     //     * @return Calendar[] Returns an array of Calendar objects

@@ -2,15 +2,17 @@
 
 {% block title %}Me Connecter{% endblock %}
 
+
+
 {% block body %}
-<form method="post">
+<form method="post" class="form-signin">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
     {% if app.user %}
         <div class="mb-3">
-            Vous etes deja connecté(e) en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            Vous êtes déjà connecté(e) en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
 
@@ -20,9 +22,7 @@
     <label for="inputPassword">Mot de passe</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
     <div class="checkbox mb-3">
         <label>
@@ -30,10 +30,8 @@
         </label>
     </div>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Me Connecter 
-    </button>
-    <p><a href="#">Mot de passe oublié<a/></p>
-    <p>pas encore incscrit(e)?<a href="{{path('app_register')}}">M'inscrire<a/></p>
+    <button class="btn btn-lg btn-primary" type="submit">Me Connecter</button>
+    <p><a href="#">Mot de passe oublié</a></p>
+    <p>Pas encore inscrit(e)? <a href="{{ path('app_register') }}">M'inscrire</a></p>
 </form>
 {% endblock %}

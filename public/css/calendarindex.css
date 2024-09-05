@@ -1,0 +1,32 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.table tr:hover {
+    background-color: #ddd;
+}
+.table a {
+    color: #3498db;
+    text-decoration: none;
+}
+.table a:hover {
+    text-decoration: underline;
+}
+.table .actions a {
+    margin-right: 10px;
+}
+.table .no-records {
+    text-align: center;
+    font-style: italic;
+}
