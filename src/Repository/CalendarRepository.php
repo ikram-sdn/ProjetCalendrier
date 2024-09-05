@@ -1,5 +1,7 @@
 <?php
 
+// src/Repository/CalendarRepository.php
+
 namespace App\Repository;
 
 use App\Entity\Calendar;
@@ -15,33 +17,52 @@ class CalendarRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Calendar::class);
     }
-    public function findByStatus(string $status)
+
+    /**
+     * Find events by status.
+     *
+     * @param string $status
+     * @return Calendar[]
+     */
+    public function findByStatus(string $status): array
     {
-        return $this->findBy(['status' => $status]);
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
     }
 
-    //    /**
-    //     * @return Calendar[] Returns an array of Calendar objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Find events by user and status.
+     *
+     * @param $user
+     * @param string $status
+     * @return Calendar[]
+     */
+    public function findByUserAndStatus($user, string $status): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('c.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Calendar
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Find events by user.
+     *
+     * @param $user
+     * @return Calendar[]
+     */
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }

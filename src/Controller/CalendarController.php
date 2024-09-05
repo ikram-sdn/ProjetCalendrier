@@ -15,21 +15,32 @@ use Symfony\Component\Routing\Annotation\Route;
 class CalendarController extends AbstractController
 {
     #[Route('/', name: 'app_calendar_index', methods: ['GET'])]
-    public function index(CalendarRepository $calendarRepository): Response
+    public function index(Request $request, CalendarRepository $calendarRepository): Response
     {
         $user = $this->getUser();
+        $status = $request->query->get('status'); // Retrieve the status filter parameter
 
-        // Vérifier si l'utilisateur a le rôle 'ROLE_ADMIN'
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
-            $calendars = $calendarRepository->findAll(); // Récupérer tous les événements pour les admins
+            // Admins can filter by status
+            if ($status) {
+                $calendars = $calendarRepository->findBy(['status' => $status]);
+            } else {
+                $calendars = $calendarRepository->findAll(); // Retrieve all events for admins
+            }
         } else {
-            $calendars = $calendarRepository->findBy(['user' => $user]); // Récupérer seulement les événements de l'utilisateur
+            // Regular users can filter their own events, optionally by status
+            if ($status) {
+                $calendars = $calendarRepository->findBy(['user' => $user, 'status' => $status]);
+            } else {
+                $calendars = $calendarRepository->findBy(['user' => $user]); // Retrieve only the user's events
+            }
         }
 
         return $this->render('calendar/index.html.twig', [
             'calendars' => $calendars,
         ]);
     }
+
 
     #[Route('/new', name: 'app_calendar_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

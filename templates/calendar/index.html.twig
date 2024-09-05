@@ -1,11 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendar index{% endblock %}
+{% block title %}Calendar Index{% endblock %}
 
 {% block body %}
-    <h1>Calendar index</h1>
+    <h1>Calendar Index</h1>
 
-    <table class="table">
+    <!-- Filter Form -->
+    <form method="get" action="{{ path('app_calendar_index') }}">
+        <div class="form-group">
+            <label for="status">Veuillez chercher:</label>
+            <select name="status" id="status" class="form-control">
+                <option value="">-- Tous les status --</option>
+                <option value="en cours" {% if app.request.query.get('status') == 'en cours' %}selected{% endif %}>En cours</option>
+                <option value="accepté" {% if app.request.query.get('status') == 'accepté' %}selected{% endif %}>Accepté</option>
+                <option value="refusé" {% if app.request.query.get('status') == 'refusé' %}selected{% endif %}>Refusé</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">chercher</button>
+    </form>
+
+    <table class="table mt-3">
         <thead>
             <tr>
                 <th>Id</th>
@@ -13,7 +27,7 @@
                 <th>Start</th>
                 <th>End</th>
                 <th>Description</th>
-                <th>All_day</th>
+                <th>All Day</th>
                 <th>Status</th>
                 {% if is_granted('ROLE_ADMIN') %}
                     <th>User</th>
@@ -22,32 +36,34 @@
             </tr>
         </thead>
         <tbody>
-        {% for calendar in calendars %}
-            <tr class="{% if calendar.status == 'accepté' %}table-success{% elseif calendar.status == 'refusé' %}table-danger{% elseif calendar.status == 'en cours' %}table-warning{% endif %}">
-                <td>{{ calendar.id }}</td>
-                <td>{{ calendar.title }}</td>
-                <td>{{ calendar.start ? calendar.start|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ calendar.end ? calendar.end|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ calendar.description }}</td>
-                <td>{{ calendar.allDay ? 'Yes' : 'No' }}</td>
-                <td>{{ calendar.status }}</td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td>{{ calendar.user ? calendar.user.nickname : 'Utilisateur non assigné' }}</td>
-                {% endif %}
-                <td>
-                    <a href="{{ path('app_calendar_show', {'id': calendar.id}) }}">show</a>
-                    {% if is_granted('ROLE_ADMIN') or calendar.status == 'en cours' %}
-                        <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">edit</a>
+            {% for calendar in calendars %}
+                <tr class="{% if calendar.status == 'accepté' %}table-success{% elseif calendar.status == 'refusé' %}table-danger{% elseif calendar.status == 'en cours' %}table-warning{% endif %}">
+                    <td>{{ calendar.id }}</td>
+                    <td>{{ calendar.title }}</td>
+                    <td>{{ calendar.start ? calendar.start|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ calendar.end ? calendar.end|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ calendar.description }}</td>
+                    <td>{{ calendar.allDay ? 'Yes' : 'No' }}</td>
+                    <td>{{ calendar.status }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>{{ calendar.user ? calendar.user.nickname : 'User not assigned' }}</td>
                     {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="{% if is_granted('ROLE_ADMIN') %}11{% else %}10{% endif %}">no records found</td>
-            </tr>
-        {% endfor %}
+                    <td>
+                        <a href="{{ path('app_calendar_show', {'id': calendar.id}) }}" class="btn btn-info btn-sm">Show</a>
+                        {% if is_granted('ROLE_ADMIN') or calendar.status == 'en cours' %}
+                            <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="{% if is_granted('ROLE_ADMIN') %}11{% else %}10{% endif %}" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_calendar_new') }}">Create new</a>
+  {% if not is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_calendar_new') }}" class="btn btn-success">Créer un nouvel événement</a>
+    {% endif %}
 {% endblock %}
