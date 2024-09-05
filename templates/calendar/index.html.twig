@@ -6,17 +6,17 @@
     <h1>Calendar Index</h1>
 
     <!-- Filter Form -->
-    <form method="get" action="{{ path('app_calendar_index') }}">
-        <div class="form-group">
+   <form method="get" action="{{ path('app_calendar_index') }}">
+        <div class="form-group" style="width: 100%; max-width: 600px;">
             <label for="status">Veuillez chercher:</label>
             <select name="status" id="status" class="form-control">
-                <option value="">-- Tous les status --</option>
+                <option value="">-- Tous les statuts --</option>
                 <option value="en cours" {% if app.request.query.get('status') == 'en cours' %}selected{% endif %}>En cours</option>
                 <option value="accepté" {% if app.request.query.get('status') == 'accepté' %}selected{% endif %}>Accepté</option>
                 <option value="refusé" {% if app.request.query.get('status') == 'refusé' %}selected{% endif %}>Refusé</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">chercher</button>
+        <button type="submit" class="btn btn-primary mt-2">Chercher</button>
     </form>
 
     <table class="table mt-3">
